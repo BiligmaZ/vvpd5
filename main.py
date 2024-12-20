@@ -51,6 +51,37 @@ def maclaurin_power(x, m):
         result += term
     return result
 
+def maclaurin_power_negative(x, m):
+    """
+    Вычисляет (1 - x)^m через ряд Маклорена.
+
+    Подробное описание:
+    Используется разложение (1 - x)^m в ряд Маклорена до заданного количества итераций.
+
+    Аргументы:
+    x (float): Значение x.
+    m (float): Показатель степени m.
+
+    Возвращает:
+    float: Приблизительное значение (1 - x)^m.
+
+    Исключения:
+    ValueError: Если x или m некорректны.
+
+    Примеры использования:
+    maclaurin_power_negative(0.5, 2)
+    0.5625
+    """
+    if not isinstance(x, (int, float)) or not isinstance(m, (int, float)):
+        raise ValueError("Аргументы должны быть числами.")
+
+    result = 1
+    for n in range(1, ITERATIONS):
+        term = (math.prod([m - k + 1 for k in range(1, n + 1)]) * (-x)**n) / math.factorial(n)
+        result += term
+    return result
+
+
 def menu():
     """
     Меню выбора функций и ввода данных пользователем.
@@ -64,10 +95,11 @@ def menu():
         print("\nВыберите функцию для вычисления:")
         print("1. Косинус через ряд Маклорена")
         print("2. (1 + x)^m через ряд Маклорена")
-        print("3. Выход")
+        print("3. (1 - x)^m через ряд Маклорена")
+        print("4. Выход")
         try:
             choice = int(input("Введите номер: "))
-            if choice == 3:
+            if choice == 4:
                 print("Выход из программы.")
                 break
             x = float(input("Введите значение x: "))
@@ -76,6 +108,9 @@ def menu():
             elif choice == 2:
                 m = float(input("Введите значение m: "))
                 print(f"(1 + {x})^{m} ≈ {maclaurin_power(x, m)}")
+            elif choice == 3:
+                m = float(input("Введите значение m: "))
+                print(f"(1 - {x})^{m} ≈ {maclaurin_power_negative(x, m)}")
             else:
                 print("Некорректный выбор. Попробуйте снова.")
         except ValueError as e:
